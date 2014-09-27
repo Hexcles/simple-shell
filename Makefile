@@ -1,10 +1,10 @@
 CC=gcc
-CFLAGS=-std=c11 -O2
+CFLAGS=-std=c11 -Og -g
 
 all: myshell
 
 myshell: myshell.o lex.yy.o
-	$(CC) $(CFLAGS) -Wall -o myshell myshell.o lex.yy.o -lfl
+	$(CC) $(CFLAGS) -Wall -o myshell myshell.o lex.yy.o -lfl -lreadline
 
 # Only turn on warning for my own code
 myshell.o: myshell.c
@@ -14,8 +14,8 @@ myshell.o: myshell.c
 lex.yy.o: lex.yy.c
 	$(CC) $(CFLAGS) -w -c lex.yy.c
 
-lex.yy.c: lex.c
-	flex lex.c
+lex.yy.c: parse_line.lex
+	flex parse_line.lex
 
 .PHONY:clean
 clean:
