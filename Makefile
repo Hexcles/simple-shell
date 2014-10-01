@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-std=c11 -Og -g
+CFLAGS=-std=c11 -O2
 
 all: myshell
 
