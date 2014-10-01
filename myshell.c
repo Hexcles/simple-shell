@@ -28,7 +28,7 @@
  * ISO 8601 date + 24-hour time
  * %Y-%m-%d %H:%M:%S
  */
-#define PROMPT_FORMAT "%F %T#"
+#define PROMPT_FORMAT "%F %T# "
 #define PROMPT_MAX_LENGTH 30
 
 /* In parse_line.o */
@@ -93,7 +93,18 @@ void dispatch(char **args) {
 	if (strcmp(args[0], "exit") == 0) {
 		exit(EXIT_SUCCESS);
 	}
+	if (strcmp(args[0], "cd") == 0) {
+		if (argc == 1) {
+			argc = 2;
+			args[1] = "~";
+		}
+		if (argc != 2) fprintf(stderr, "Wrong command format");
+		if (strcmp(args[1], "~") == 0) args[1] = getenv("HOME");
+		if (chdir(args[1]) == -1) perror("Error changind directory");
+		return;
+	}
 
+	/* Run external commands. */
 	child = fork();
 	if (child == -1) {
 		perror("Error when forking");
